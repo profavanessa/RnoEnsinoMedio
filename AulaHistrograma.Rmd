@@ -1,0 +1,274 @@
+---
+title: "Aula de Histograma"
+author: "Vanessa Manhães"
+date: "29/06/2019"
+output: html_document
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Histograma
+
+Histograma é uma representação gráfica da distribuição de frenquências de uma massa de medição, normalmente um gráfico de barras verticais. Tal gráfico é composto por retângulos justapostos em que a base de cada um deles corresponde ao intervalo de classe e a sua altura à respectiva frequência.
+
+#### Veja bem
+
+**Histograma não é gráfico de barras.**
+
++ Vamos entender isso: o histograma é aplicável para variáveis quantitativas (sobretudo quantitativas contínuas), variáveis que por sua natureza dificilmente se repetem. 
+**Por exemplo:** o registro da altura dos 25 alunos de uma turma do 1º ano do ensino médio. O registro gerou o seguinte vetor:
+
+```{r}
+altura = c(1.3, 1.33, 1.4, 1.42, 1.45, 1.5, 1.5, 1.52, 1.55, 1.56, 1.58, 1.6, 1.62, 1.64, 1.65, 1.67, 1.68, 1.68, 1.7, 1.72, 1.72, 1.74, 1.8, 1.83, 1.85)
+altura
+```
+
+Podemos gerar um gráfico de barras com esses dados, porém não será possível verificar o comportamento dessa distribuição.
+
+```{r}
+freq= table(altura)
+freq
+barplot(freq, ylab= "Frequência", xlab="Altura dos alunos")
+```
+
+Sendo assim, precisamos recorrer ao histograma.
+
+## Construção do Histograma
+
+De forma simplificada, para construir um histograma no R precisamos que dada distribuição de dados esteja na forma de vetor para aplicarmos a função **hist()**.
+
+Utilizando o vetor "altura", do exemplo anterior, construiremos o histograma.
+
+```{r}
+hist(altura)
+```
+
+Bem fácil, né?
+
+Agora com esse gráfico é possivel responder questões como:
+
++ Dentro dessa turma, qual é a variação das alturas entre os alunos?
+
++ De forma estimada, qual é a altura média dessa turma?
+
++ O que podemos afirmar quanto a forma da distribuição?
+
++ Existe alguma altura que seja mais comum?
+
+Entre outras questões.
+
+Observe que automaticamente, a função gerou um gráfico que, diferentemente do gráfico de barras, dividiu o eixo x em intervalos de classes iguais, a cada 10 cm, e acumulou a ocorrencia de alunos dentro de cada intervalo. Os retângulos são justapostos, porque um intervalo de classe se inicia imediatamente após o término do outro.
+
+A tabela de frequência para o gráfico acima, ficaria da seguinte forma:
+
+Intervalo de Classe | Alunos| Freq Relativa
+--------------------|-------|--------------
+[1.3 ; 1.4] |3 | 0.12
+]1.4 ; 1.5] |4 | 0.16
+]1.5 ; 1.6] |5 | 0.2
+]1.6 ; 1.7]	|7 | 0.28		
+]1.7 ; 1.8]	|4 | 0.16			
+]1.8 ; 1.9]	|2 | 0.08
+
+Caso necessário, podemos colocar o mesmo gráfico em frequência relativa.
+
+```{r}
+hist(altura, 
+     freq = FALSE)
+```
+
+
+Vamos agora melhorar alguns aspéctos do histograma
+
+
+
+## Como colocar título e nomes nos eixos
+
+Utilizaremos a função **main =** para definir o título e as funções **xlab =** e **ylab =** para definir os rótulos dos eixos. Após cada função o nome deverá ser definido entre aspas.
+
+```{r}
+hist(altura,  
+     main = "Altura dos alunos do 1º ano do Ensino Médio",
+     xlab = "Altura dos alunos", ylab = "Freq. Absoluta")
+```
+
+
+## Como colorir
+
+Podemos colorir as barras do histograma com a função **col= c("nomedacor")**. Podemos também alterar as cores da borda com a função **border= c("nomedacor")**, ou ainda retirar as bordas com a função **border = FALSE**.
+
+
+```{r}
+hist(altura,  
+     main = "Altura dos alunos do 1º ano do Ensino Médio", 
+     xlab = "Altura dos alunos", ylab = "Freq. Absoluta", 
+     col = c("violet"), 
+     border = FALSE)
+```
+
+
+Ainda é possível colorir cada retangulo de uma cor, basta definir cor a cor dentro da função "col= c()"
+
++ **D I C A:** com o R você não precisa ficar na mesmisse das cores básicas. Use o comando **colors()** e descubra uma grande lista de cores.
+
+
+
+
+## Como definir os limites dos eixos
+
+É possivel definir os limites diferentes nos eixos de x e de y através das funções **xlim = c(limiteinferior, limitesuperior)** e **ylim = c(limiteinferior, limitesuperior)**. 
+
+
+```{r}
+hist(altura,  
+     main = "Altura dos alunos do 1º ano do Ensino Médio", 
+     xlab = "Altura dos alunos", ylab = "Freq. Absoluta", 
+     col = c("violet"), 
+     border = FALSE, 
+     xlim = c(1.2,2), ylim = c(0,10))
+```
+
+
+
+## Como colocar rótulo nas colunas
+
+Para rotular uma coluna, recorremos à função **labels =**. No caso do Histograma, às vezes pode ser interessante ter especificado a frequência em cima de cada coluna, para isso definimos **labels = TRUE**. Para outros rótulos, lembre-se de colocar os valores dentro do vetor entre aspas.
+
+
+```{r}
+hist(altura,  
+     main = "Altura dos alunos do 1º ano do Ensino Médio", 
+     xlab = "Altura dos alunos", ylab = "Freq. Absoluta", 
+     col = c("violet"), 
+     border = FALSE, 
+     xlim = c(1.2,2), ylim = c(0,10),
+     labels = TRUE)
+```
+
+
+
+## Particularidades do histrograma
+
+Veremos agora algumas funções aplicáveis ao histograma.
+
+### Número de classes
+
+Com a função **nclass =** determinamos o número de classes que o hitograma terá. É possivel ter o mesmo resultado com a função **breaks = **.
+
+### Tamanho do intervalo de classe
+
+Determinar o número de classes pode ser insuficiente para demostrar alguma situação. Então, a mesma função **breaks= c()** permite definir o limite de cada classe, para isso basta determinar os valores limites das classes.
+
+### Tipos de intervalos de classe
+
+Observe que o pardrão de intervalo de classe no R é **]a ; b]** (aberto no limite superior e fechado no limite inferior). Para inverter o intervalo use a função **right = FALSE**
+
+
+```{r}
+hist(altura,  
+     main = "Altura dos alunos do 1º ano do Ensino Médio", 
+     xlab = "Altura dos alunos", ylab = "Freq. Absoluta", 
+     col = c("violet","pink","lightblue","springgreen"), 
+     border = c("royalblue"), 
+     breaks = c(1.3, 1.45, 1.6, 1.75, 1.9), 
+     right = FALSE)
+```
+
+
+
+## E X E R C Í C I O 
+
+Os dados são referentes às temperaturas diárias do mes de março, em graus Celsius, na cidade de Niteroi em 2019. (Fonte: INMET)
+
+27.6, 25.2, 26.6, 25.9, 27.4, 28.5, 30.0, 30.4, 30.4, 28.9, 27.1, 27.8, 28.9,
+29.1, 28.8, 27.2, 27.8, 28.9, 30.1, 27.1, 24.0, 23.1, 24.5, 26.2, 27.0, 27.2,
+26.2, 25.6, 23.6, 24.0, 24.7
+
++ Qual foi a variação da temperatura no mês de março, na cidade de Niterói em 2019?
+
++ Faça o histograma das temperaturas do mês de março. Coloque o título e os rótulos nos eixos.
+
++ Faça o histograma da frequência relativa, coloque o título e os rótulos nos eixos, determine uma cor para o histograma e retire as bordas.
+
++ Construa uma tabela de frequências para esses dados com 5 intervalos de classes (fechado no limite superior e aberto no limite inferior)
+
++ Faça o histograma da tabela acima e rotule as colunas.
+
+
+
+
+## R E S P O S T A S
+
++ A variação da temperatura será dada pela diferença da maior temperatura registrada pela menor temperatura registrada. Sendo assim, 30.4 - 23.1 = 7,3 °C
+
++ Primeiro, crie o vetor temperatura com os valores dados:
+
+```{r}
+ temperatura = c(27.6, 25.2, 26.6, 25.9, 27.4, 28.5, 30.0, 30.4, 30.4, 28.9, 27.1, 27.8, 28.9, 29.1, 28.8, 27.2, 27.8, 28.9, 30.1, 27.1, 24.0, 23.1, 24.5, 26.2, 27.0, 27.2, 26.2, 25.6, 23.6, 24.0, 24.7)
+ temperatura
+
+```
+
+
+Agora, podemos fazer o histograma
+
+
+```{r}
+ hist (temperatura,
+       main = "Temperaturas no mês de março de 2019  - Niterói",
+       xlab = "Temperaturas", ylab = "Freq. Absoluta")
+
+```
+
+
++ Devemos lembrar de acrescentar "freq = FALSE" para frequência relativa.
+
+
+```{r}
+hist (temperatura,
+      main = "Temperaturas no mês de março de 2019  - Niterói",
+      xlab = "Temperaturas", ylab = "Freq. Absoluta",
+      freq = FALSE,
+      col = "lawngreen",
+      border = FALSE)
+
+```
+
+
++ Para construir essa tabela, precisamos pensar na amplitude da distribuição de dados, que varia de 23.1 à 30.4. De forma a abranger todos os dados, podemos considerar, então, o início em 23 °C e o fim em 31 °C. Isso irá gerar 5 intervalos de classe com amplitude de 1,6 °C (31 - 23 = 8, 8 / 5 = **1.6**).
+
+Intervalos | Freq. Asoluta |  Freq. Relativa
+------------|----------|-----------------
+[23 ; 24.6[ | 5 | 0.16
+[24.6 ; 26.2[ | 4 | 0.13
+[26.2 ; 27.8[ | 10 | 0.32
+[27,8 ; 29,4[ | 8 | 0.26
+[29,4 ; 31] | 4 | 0.13
+
+
++ Observe que o intervalo de classe da tabela acima é na ordem inversa ao padrão do R, sendo necessário aplicar "right = FALSE". Outro detalhe é a amplitude de classe igual à 1,6, podendo ser respeitada com a função "breaks ="
+
+
+```{r}
+hist (temperatura, 
+      main = "Temperaturas no mês de março de 2019  - Niterói", 
+      xlab = "Temperaturas", ylab = "Freq. Absoluta", 
+      col = "purple3", 
+      breaks = c(23, 24.6, 26.2, 27.8, 29.4, 31), 
+      right = FALSE, 
+      labels = TRUE,
+      ylim = c(0,11), ##definimos um novo limite para y para subir a posição do título
+      xlim = c(22,32)) ##colocamos "xlim = " para que o histograma fique sobre o eixo de x
+```
+
+
+
+
+## REFERÊNCIAS
+
++ Introdução ao R utilizando a Estatística Básica - Luciane Ferreira Alcoforado e Carolina Valani Cavalcante
+
++ Visualização de dados com software R - Luciane Ferreira Alcoforado e Ariel Levy
